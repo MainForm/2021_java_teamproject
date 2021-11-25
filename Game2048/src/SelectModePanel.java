@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-class SelectModePanel extends MenuPanel{
+public class SelectModePanel extends MenuPanel{
     public SelectModePanel(){
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 
