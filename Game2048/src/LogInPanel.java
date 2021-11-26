@@ -69,6 +69,7 @@ public class LogInPanel extends MenuPanel{
         btn_OK.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+         
                 if(tf_id.getText().equals("Test1") && tf_pw.getText().equals("Password")){
                     Main.mainFrame.changePanel(new SelectModePanel());
                 }

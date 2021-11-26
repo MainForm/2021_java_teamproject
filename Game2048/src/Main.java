@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Main {
     static MainFrame mainFrame;
@@ -80,6 +82,9 @@ class MainFrame extends JFrame{
     public void changePanel(JPanel newPanel) {
         getContentPane().removeAll();
         add(newPanel,BorderLayout.CENTER);
+        newPanel.setRequestFocusEnabled(true);
+        newPanel.setFocusable(true);
+        newPanel.requestFocus();
         revalidate();
         repaint();
     }
