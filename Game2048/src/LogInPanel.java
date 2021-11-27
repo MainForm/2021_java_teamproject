@@ -1,17 +1,10 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
 public class LogInPanel extends MenuPanel{
     private JTextField tf_id;
-    private JTextField tf_pw;
+    private JPasswordField tf_pw;
 
     public LogInPanel(){
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
@@ -55,7 +48,7 @@ public class LogInPanel extends MenuPanel{
         pwPanel.add(Box.createHorizontalStrut(150));
         pwPanel.add(new JLabel("PW"));
         pwPanel.add(Box.createHorizontalStrut(10));
-        pwPanel.add(tf_pw = new JTextField(15));
+        pwPanel.add(tf_pw = new JPasswordField(15));
         pwPanel.add(Box.createHorizontalStrut(150));
 
         jPanel.add(pwPanel);
@@ -69,15 +62,13 @@ public class LogInPanel extends MenuPanel{
         btn_OK.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-         
-                if(tf_id.getText().equals("Test1") && tf_pw.getText().equals("Password")){
-                    Main.mainFrame.changePanel(new SelectModePanel());
-                }
-                else{
-                    JOptionPane.showMessageDialog(null,"Æ²·È½À´Ï´Ù.","Failed",JOptionPane.ERROR_MESSAGE);
-                }
+            	LogIn();
             }
         });
+        
+        tf_pw.addKeyListener(new LoginEventAdoptor());
+        tf_id.addKeyListener(new LoginEventAdoptor());
+        
         confirmPanel.add(btn_OK);
         confirmPanel.add(Box.createHorizontalStrut(50));
 
@@ -86,5 +77,26 @@ public class LogInPanel extends MenuPanel{
         jPanel.add(newLine(Box.createVerticalStrut(200)));
 
         add(jPanel);
+    }
+    
+    public void LogIn() {
+        if(tf_id.getText().equals("Test1") && tf_pw.getText().equals("Password")){
+            Main.mainFrame.changePanel(new SelectModePanel());
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"Æ²·È½À´Ï´Ù.","Failed",JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    class LoginEventAdoptor extends KeyAdapter{
+    	@Override
+        public void keyPressed(KeyEvent e) { 
+	   	     int key = e.getKeyCode();
+	   	     if (key == KeyEvent.VK_ENTER) {
+	   	        Toolkit.getDefaultToolkit().beep(); 
+	   	        LogInPanel.this.LogIn();
+	   	     }
+
+    	}
     }
 }
