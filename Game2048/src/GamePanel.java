@@ -56,8 +56,10 @@ public class GamePanel extends JPanel {
     }
     
     private void startGame() {
-    	addBlock(0,0,2);
+    	addBlock(0,0,4);
+    	addBlock(1,0,4);
     	addBlock(2,0,2);
+    	addBlock(3,0,2);
     }
     
     boolean addBlock(int x,int y,int value) {
@@ -132,7 +134,10 @@ public class GamePanel extends JPanel {
  	            	 Board[x][b+1] = Board[x][b];
  	            	 Board[x][b] = null;
  	              }
- 	              else if(Board[x][b] == Board[x][b+1] && count != 2) {
+ 	              else if(Board[x][b] == null) {
+ 	            	  continue;
+ 	              }
+ 	              else if(Board[x][b].getValue() == Board[x][b+1].getValue() && count != 2) {
  	                 count++;
  	                 mergeBlock(x, b+1, x, b);
  	              }
