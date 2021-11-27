@@ -4,15 +4,14 @@ import java.awt.*;
 import java.awt.event.*;
 
 
-
 public class GamePanel extends JPanel {
-	public static final int BLOCK_HEIGHT = 4;
-	public static final int BLOCK_WIDTH = 4;
+	Game2048 game;
 	
-	Block[][] Board = new Block[BLOCK_HEIGHT][BLOCK_WIDTH];
-	JLabel[][] lbl_blocks = new JLabel[BLOCK_HEIGHT][BLOCK_WIDTH];
+	JLabel[][] lbl_blocks = new JLabel[Game2048.BLOCK_HEIGHT][Game2048.BLOCK_WIDTH];
 
-    public GamePanel(){
+    public GamePanel(Game2048 game){
+    	this.game = game;
+    	
     	addEvent();
     	
         setLayout(new BorderLayout());
@@ -32,19 +31,19 @@ public class GamePanel extends JPanel {
             	
                 switch (keyEvent.getKeyCode()) {
                     case KeyEvent.VK_UP:
-
+                    	game.moveUp();
                         break;
 
                     case KeyEvent.VK_DOWN:
-
+                    	game.moveDown();
                         break;
 
                     case KeyEvent.VK_LEFT:
-
+                    	game.moveLeft();
                         break;
 
                     case KeyEvent.VK_RIGHT:
-                    	moveRight();
+                    	game.moveRight();
                         break;
 
                 }
@@ -56,20 +55,12 @@ public class GamePanel extends JPanel {
     }
     
     private void startGame() {
-    	addBlock(0,0,4);
-    	addBlock(1,0,4);
-    	addBlock(2,0,2);
-    	addBlock(3,0,2);
+    	game.addBlock(0,0,4);
+    	game.addBlock(1,0,4);
+    	game.addBlock(2,0,2);
+    	game.addBlock(3,0,2);
     }
     
-    boolean addBlock(int x,int y,int value) {
-        //board가 이미 다 차있는 경우
-    	if(Board[y][x] != null) return false;
-
-    	Board[y][x] = new Block(value);
-        return true;
-    }
-
     private void createMenu(){
         JPanel pnl = new JPanel();
 
@@ -90,8 +81,8 @@ public class GamePanel extends JPanel {
         pnl.setLayout(new GridLayout(4, 4));
         pnl.setBackground(new java.awt.Color(0xCDC1B4));
 
-        for (int iy = 0; iy < BLOCK_HEIGHT; iy++) {
-        	for(int ix = 0;ix < BLOCK_WIDTH;ix++) {
+        for (int iy = 0; iy < Game2048.BLOCK_HEIGHT; iy++) {
+        	for(int ix = 0;ix < Game2048.BLOCK_WIDTH;ix++) {
 	            JLabel jl =  new JLabel("0", JLabel.CENTER);
 	            
 	            jl.setOpaque(true);
@@ -111,46 +102,11 @@ public class GamePanel extends JPanel {
     @Override
     public void paint(Graphics g) {
     	super.paint(g);
-    	for(int iy = 0;iy < BLOCK_HEIGHT;iy++) {
-    		for(int ix = 0;ix < BLOCK_WIDTH;ix++) {
-    			if(Board[iy][ix] == null) {
-    				lbl_blocks[iy][ix].setBackground(Block.BLOCK_COLORS[0]);
-    				lbl_blocks[iy][ix].setText("0");
-    				continue;
-    			}
-    			lbl_blocks[iy][ix].setBackground(Board[iy][ix].getBlockColor());
-    			lbl_blocks[iy][ix].setText(Integer.toString(Board[iy][ix].getValue()));
+    	for(int iy = 0;iy < Game2048.BLOCK_HEIGHT;iy++) {
+    		for(int ix = 0;ix < Game2048.BLOCK_WIDTH;ix++) {
+    			lbl_blocks[iy][ix].setBackground(game.getBlockColor(ix, iy));
+    			lbl_blocks[iy][ix].setText(Integer.toString(game.getBlockValue(ix, iy)));
     		}
     	}
     }
-    public void moveRight() {
- 	   int count = 0;
- 	      
-        
-        for(int x=0; x<4; x++) {
-     	   for(int a=2; a>=0; a--) {
-     		   for(int b=a; b<3; b++) {
- 	              if(Board[x][b+1] == null) {
- 	            	 Board[x][b+1] = Board[x][b];
- 	            	 Board[x][b] = null;
- 	              }
- 	              else if(Board[x][b] == null) {
- 	            	  continue;
- 	              }
- 	              else if(Board[x][b].getValue() == Board[x][b+1].getValue() && count != 2) {
- 	                 count++;
- 	                 mergeBlock(x, b+1, x, b);
- 	              }
-     		   }
-     	   }
-     	   count = 0;
-        }
-    }
-    public int mergeBlock(int x, int y, int dx, int dy) {
-    	Board[x][y].increaseValue();
-    	Board[dx][dy] = null;
-    	return Board[x][y].getValue();
-    }
 }
-
-class Point { int height, width; }

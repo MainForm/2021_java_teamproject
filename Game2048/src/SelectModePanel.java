@@ -46,7 +46,7 @@ public class SelectModePanel extends MenuPanel{
         btn1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                Main.mainFrame.changePanel(new GamePanel());
+                Main.mainFrame.changePanel(new GamePanel(new OriginalMode()));
                 // new Game(); //게임 시작
                 //mainFrame.dispose();
             }
