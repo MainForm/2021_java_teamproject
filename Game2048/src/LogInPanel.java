@@ -1,6 +1,9 @@
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
+
+import java.sql.*;
 
 public class LogInPanel extends MenuPanel{
     private JTextField tf_id;
@@ -53,23 +56,34 @@ public class LogInPanel extends MenuPanel{
 
         jPanel.add(pwPanel);
         jPanel.add(newLine(Box.createVerticalStrut(10)));
+        
+        tf_pw.addKeyListener(new LoginEventAdoptor());
+        tf_id.addKeyListener(new LoginEventAdoptor());
 
         //Btn
         JPanel confirmPanel = new JPanel();
         confirmPanel.setLayout(new BoxLayout(confirmPanel,BoxLayout.X_AXIS));
         confirmPanel.add(Box.createHorizontalStrut(50));
-        JButton btn_OK = new JButton("OK");
-        btn_OK.addActionListener(new ActionListener() {
+        JButton btn_SignIn = new JButton("Sign in");
+        btn_SignIn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
             	LogIn();
             }
         });
         
-        tf_pw.addKeyListener(new LoginEventAdoptor());
-        tf_id.addKeyListener(new LoginEventAdoptor());
+        JButton btn_SignUp = new JButton("Sign up");
+        btn_SignUp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+            	SignUp();
+            }
+        });
         
-        confirmPanel.add(btn_OK);
+        
+        confirmPanel.add(btn_SignIn);
+        confirmPanel.add(Box.createHorizontalStrut(10));
+        confirmPanel.add(btn_SignUp);
         confirmPanel.add(Box.createHorizontalStrut(50));
 
         jPanel.add(confirmPanel);
@@ -80,12 +94,39 @@ public class LogInPanel extends MenuPanel{
     }
     
     public void LogIn() {
-        if(tf_id.getText().equals("Test1") && tf_pw.getText().equals("Password")){
-            Main.mainFrame.changePanel(new SelectModePanel());
-        }
-        else{
-            JOptionPane.showMessageDialog(null,"틀렸습니다.","Failed",JOptionPane.ERROR_MESSAGE);
-        }
+    	try {
+	        if(Main.dbConn.SignIn(tf_id.getText(),tf_pw.getText()) == true){
+	            Main.mainFrame.changePanel(new SelectModePanel());
+	        }
+	        else{
+	            JOptionPane.showMessageDialog(null,"틀렸습니다.","Failed",JOptionPane.ERROR_MESSAGE);
+	        }
+    	}
+    	catch(SQLException err) {
+    		System.out.println("Failed to connect Server");
+    	}
+    }
+    public void SignUp() {
+    	try {
+    		if(tf_id.getText().trim().length() == 0) {
+    			JOptionPane.showMessageDialog(null,"아이디를 입력해 주세요","Failed",JOptionPane.ERROR_MESSAGE);
+    			return;
+    		}
+    		if(tf_pw.getText().trim().length() == 0) {
+    			JOptionPane.showMessageDialog(null,"비밀 번호를 입력해 주세요","Failed",JOptionPane.ERROR_MESSAGE);
+    			return;
+    		}
+	        if(Main.dbConn.SignUp (tf_id.getText(),tf_pw.getText()) == true){
+	        	JOptionPane.showMessageDialog(null,"회원가입 되었습니다.","OK!",JOptionPane.INFORMATION_MESSAGE);
+	            Main.mainFrame.changePanel(new SelectModePanel());
+	        }
+	        else{
+	            JOptionPane.showMessageDialog(null,"이미 동일한 아이디가 있습니다.","Failed",JOptionPane.ERROR_MESSAGE);
+	        }
+    	}
+    	catch(SQLException err) {
+    		System.out.println("Failed to connect Server");
+    	}
     }
     
     class LoginEventAdoptor extends KeyAdapter{

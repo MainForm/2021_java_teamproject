@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-16">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="C:/Users/Gordon/Desktop/2021년 2학기/자바프로그래밍/팀 프로젝트/2021_java_teamproject/Game2048/lib/mysql-connector-java-8.0.26.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

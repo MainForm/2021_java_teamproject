@@ -6,10 +6,10 @@ public abstract class Game2048 {
 	public static final int BLOCK_WIDTH = 4;
 	
 	private Block[][] Board = new Block[BLOCK_HEIGHT][BLOCK_WIDTH];
-	private LinkedList<Point> Blank = new LinkedList<Point>();
 	
-	private int score = 0;
-	private Random rand = new Random();
+	protected int score = 0;
+	
+	private boolean __bOver = false;
 	
     public boolean addBlock(int x,int y,int value) {
         //board가 이미 다 차있는 경우
@@ -19,38 +19,22 @@ public abstract class Game2048 {
         return true;
     }
     
-    private void blankSet() {
-    	Blank.clear();
-    	for(int iy=0; iy<BLOCK_HEIGHT; iy++) {
-    		for(int ix=0; ix<BLOCK_WIDTH; ix++) {
-    			//빈 블럭인 경우
-    			if(Board[iy][ix]==null) {
-    				Blank.add(new Point(ix,iy));
-    			}
-    		}
-    	}
-    }
-    
-    private void addBlockRandomly() {
-    	blankSet();
-    	
-    	Point ptRandom = Blank.get(rand.nextInt(Blank.size()));
-    	
-    	addBlock(ptRandom.x,ptRandom.y,2);
-    }
     
     public void start() {
     	score = 0;
+    	__bOver = false;
     	
     	Board = new Block[BLOCK_HEIGHT][BLOCK_WIDTH];
-    	
-    	for(int i = 0;i < 2;i++) {
-    		addBlock(rand.nextInt(BLOCK_WIDTH),rand.nextInt(BLOCK_HEIGHT),2);
-    	}
+    
+    }
+    
+    public void GameOver() {
+    	__bOver = true;
     }
 	
-    public void moveRight() {
+    public int moveRight() {
   	   int count = 0;
+  	   int score = 0;
   	      
          for(int x=0; x<4; x++) {
       	   for(int a=2; a>=0; a--) {
@@ -63,20 +47,22 @@ public abstract class Game2048 {
   	            	  continue;
   	              }
   	              else if(Board[x][b].getValue() == Board[x][b+1].getValue() && count != 2) {
-  	                 count++;
-  	                 mergeBlock(x, b+1, x, b);
+	                     if(count == 1 && b == 2)
+  	                    	 continue;
+  	            	  count++;
+  	                 score += mergeBlock(x, b+1, x, b);
   	              }
       		   }
       	   }
       	   count = 0;
          }
-         
-         addBlockRandomly();
+         return score;
      }
      
      
-     public void moveLeft() {
+     public int moveLeft() {
   	   int count = 0;
+  	   int score = 0;
   	   
   	   for(int x=0; x<4; x++) {
   		   for(int a=0; a<3; a++) {
@@ -89,18 +75,21 @@ public abstract class Game2048 {
   					   continue;
   				   }
   				   else if(Board[x][b].getValue() == Board[x][b+1].getValue() && count != 2) {
+	                     if(count == 1 && b == 2)
+  	                    	 continue;
   					   count++;
-  					   mergeBlock(x, b, x, b+1);
+  					   score += mergeBlock(x, b, x, b+1);
   				   }
   			   }
   		   }
   		   count = 0;
   	   }
-  	   addBlockRandomly();
+  	   return score;
      }
      
-     public void moveDown() {
+     public int moveDown() {
   	   int count = 0;
+  	   int score = 0;
   	      
   	   for(int y=0; y<4; y++) {
       	  for(int a=2; a>=0; a--) {
@@ -113,19 +102,22 @@ public abstract class Game2048 {
   					   continue;
   				  }
                    else if(Board[b][y].getValue() == Board[b+1][y].getValue() && count != 2) {
-                 	  count++;
-                       mergeBlock(b+1, y, b, y);
+	                     if(count == 1 && b == 2)
+  	                    	 continue;
+                	   count++;
+                       score += mergeBlock(b+1, y, b, y);
                    }
       		   }
       	   }
       	   count = 0;
          }
-  	   addBlockRandomly();
+  	   
+  	   return score;
      }
      
-     public void moveUp() {
-  	   int count = 0;
-  	     
+     public int moveUp() {
+    	 int count = 0;
+    	 int score = 0;
   	      
   	      for(int y=0; y<4; y++) {
   	    	  for(int a=0; a<3; a++) {
@@ -138,14 +130,17 @@ public abstract class Game2048 {
   	 					   continue;
   	 				  }
   	                  else if(Board[b][y].getValue() == Board[b+1][y].getValue() && count != 2) {
-  	                     count++;
-  	                     mergeBlock(b, y, b+1, y);
+  	                     if(count == 1 && b == 2)
+  	                    	 continue;
+  	                	  count++;
+  	                	score += mergeBlock(b, y, b+1, y);
   	                  }
   	    		  }
   	    	  }
   	    	  count = 0;
   	      }
-  	      addBlockRandomly();
+  	      
+  	      return score;
      }
      
      public int getBlockValue(int x,int y) {
@@ -167,13 +162,14 @@ public abstract class Game2048 {
      	Board[dx][dy] = null;
      	return Board[x][y].getValue();
      }
-}
-
-class Point { 
-	int x, y; 
-	
-	public Point(int x,int y) {
-		this.x = x;
-		this.y = y;
-	}
+     
+     public boolean isOver() {
+    	 return __bOver;
+     }
+     
+     public int getScore() {
+    	 return score;
+     }
+     
+     protected abstract int addScore(int value);
 }

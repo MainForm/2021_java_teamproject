@@ -5,20 +5,33 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import jdbc_mysql.DBConnector;
+
+import java.sql.*;
+
 public class Main {
     static MainFrame mainFrame;
     final static String gameRule = "2048게임규칙";
-
+    public static DBConnector dbConn;
+    
     public static void main(String[] args){
-        mainFrame = new MainFrame();
+
+        try {
+        	dbConn = new DBConnector();
+        	mainFrame = new MainFrame(new LogInPanel());
+        }
+        catch(Exception err) {
+        	JOptionPane.showMessageDialog(null,"서버 연결에 실패 했습니다.","Failed",JOptionPane.ERROR_MESSAGE);
+        	mainFrame = new MainFrame(new SelectModePanel());
+        }
     }
 }
 
 class MainFrame extends JFrame{
     //MainPenel mainPenel;
 
-    public MainFrame(){
-        setTitle("test");
+    public MainFrame(JPanel StartPanel){
+        setTitle("Game2048");
         setSize(500, 500);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -27,9 +40,8 @@ class MainFrame extends JFrame{
         setLayout(new BorderLayout());
 
         createMenu();
-        add(new LogInPanel(),BorderLayout.CENTER);
+        add(StartPanel,BorderLayout.CENTER);
         setVisible(true);
-
     }
 
     //상단 메뉴바
