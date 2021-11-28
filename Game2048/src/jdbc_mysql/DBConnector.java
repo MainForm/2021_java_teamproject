@@ -6,7 +6,7 @@ public class DBConnector {
     private Connection conn; //DB 커넥션 연결 객체
     private static final String USERNAME = "root";//DBMS접속 시 아이디
     private static final String PASSWORD = "[Password_1234]";//DBMS접속 시 비밀번호
-    private static final String URL = "jdbc:mysql://54.180.82.189:55876/Game2048";//DBMS접속할 db명
+    private static final String URL = "jdbc:mysql://54.180.2.29:58044/Game2048";//DBMS접속할 db명
     
     public DBConnector() throws Exception, SQLException {
         try {

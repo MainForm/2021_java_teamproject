@@ -86,8 +86,10 @@ class MainFrame extends JFrame{
         mn.add(set);
         mn.add(rank);
         mn.add(rule);
+        
+        
         mn.add(logout);
-
+        
         setJMenuBar(mb);
     }
 
