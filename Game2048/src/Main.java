@@ -1,4 +1,7 @@
 import javax.swing.*;
+
+import com.google.gson.*;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -7,14 +10,27 @@ import jdbc_mysql.DBConnector;
 import java.sql.*;
 import java.util.*;
 
+import java.io.*;
+import java.nio.file.Files;
+
 public class Main {
     static MainFrame mainFrame;
     public static DBConnector dbConn;
     
     public static void main(String[] args){
-
+    	
         try {
-        	dbConn = new DBConnector();
+        	File jsonFile = new File("mySQL.json");
+        	FileReader jsonReader = new FileReader(jsonFile.getPath());
+        	JsonObject jsonObj = new JsonObject();
+        	
+        	Gson gsonObj = new Gson();
+        	
+        	jsonObj = gsonObj.fromJson(jsonReader, JsonObject.class);
+        	
+        	
+        	
+        	dbConn = new DBConnector(jsonObj.get("IP").getAsString(),jsonObj.get("Port").getAsInt());
         	mainFrame = new MainFrame(new LogInPanel());
         }
         catch(Exception err) {
