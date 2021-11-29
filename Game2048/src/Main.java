@@ -11,7 +11,9 @@ import java.sql.*;
 import java.util.*;
 
 import java.io.*;
-import java.nio.file.Files;
+import java.nio.file.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Main {
     static MainFrame mainFrame;
@@ -21,6 +23,14 @@ public class Main {
     	
         try {
         	File jsonFile = new File("mySQL.json");
+        	if(jsonFile.exists() == false) {
+        		Path pt = Paths.get(".");
+        		System.out.println("json 파일이 없음.");
+        		System.out.print(pt.toAbsolutePath());
+        		System.out.println("에 mySQL.json이 있는지 확인하세요");
+        	
+        		throw new Exception();
+        	}
         	FileReader jsonReader = new FileReader(jsonFile.getPath());
         	JsonObject jsonObj = new JsonObject();
         	
