@@ -6,7 +6,7 @@ public class DBConnector {
     private Connection conn; //DB 커넥션 연결 객체
     private static final String USERNAME = "root";//DBMS접속 시 아이디
     private static final String PASSWORD = "[Password_1234]";//DBMS접속 시 비밀번호
-    private static final String URL = "jdbc:mysql://54.180.2.29:58044/Game2048";//DBMS접속할 db명
+    private static final String URL = "jdbc:mysql://13.124.182.76:55943/Game2048";//DBMS접속할 db명
     
     public DBConnector() throws Exception, SQLException {
         try {
@@ -14,6 +14,7 @@ public class DBConnector {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             System.out.println("드라이버 로딩 성공");
+
         } catch (Exception e) {
             System.out.println("드라이버 로딩 실패 ");
             try {
@@ -59,5 +60,9 @@ public class DBConnector {
     	ResultSet rs = ppst.executeQuery();
     	
     	return rs.next();
+    }
+    
+    public boolean isClosed() throws SQLException {
+    	return conn.isClosed();
     }
 }

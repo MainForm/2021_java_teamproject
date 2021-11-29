@@ -1,3 +1,5 @@
+package Game2048;
+
 import java.awt.*;
 import java.util.*; //for Random class
 
@@ -171,5 +173,5 @@ public abstract class Game2048 {
     	 return score;
      }
      
-     protected abstract int addScore(int value);
+     public abstract int addScore(int value);
 }

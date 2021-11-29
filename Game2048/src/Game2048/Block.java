@@ -1,3 +1,4 @@
+package Game2048;
 import javax.swing.*;
 import java.awt.*;
 

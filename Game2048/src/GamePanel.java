@@ -1,22 +1,29 @@
 
 import javax.swing.*;
+import javax.swing.Timer;
+
 import java.awt.*;
 import java.awt.event.*;
-import java.util.LinkedList;
-import java.util.Random;
+import java.util.*;
 
+import java.text.SimpleDateFormat;
+
+import Game2048.*;
 
 public class GamePanel extends JPanel {
 	Game2048 game;
 	private Random rand = new Random();
 	JLabel lbl_score = new JLabel("0");
+	JLabel lbl_time = new JLabel("00:00");
 	
 	JLabel[][] lbl_blocks = new JLabel[Game2048.BLOCK_HEIGHT][Game2048.BLOCK_WIDTH];
 	
 	private LinkedList<Point> Blank = new LinkedList<Point>();
 	
 	private gameKeyAdaptor keyEvent = new gameKeyAdaptor();
-
+	
+	Timer timer_Game;
+	
     public GamePanel(Game2048 game){
     	this.game = game;
     	
@@ -24,9 +31,9 @@ public class GamePanel extends JPanel {
 
         createMenu();
         createGameScreen();
+       
         
         startGame();
-   
     }
     
     private int blankSet() {
@@ -51,10 +58,26 @@ public class GamePanel extends JPanel {
     		game.addBlock(rand.nextInt(Game2048.BLOCK_WIDTH),rand.nextInt(Game2048.BLOCK_HEIGHT),2);
     	}
     	addKeyListener(keyEvent);
+    	
+        timer_Game = new Timer(1000,new ActionListener() {
+        	int second = 0;
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		second++;
+        		
+        		SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");  
+        		
+        		lbl_time.setText(sdf.format(new Date(second * 1000)));
+        		
+        	}
+        });
+        
+        timer_Game.start();
     }
     
 	private void GameOver() {
 		game.GameOver();
+		timer_Game.stop();
 		
 		//delete key event
 		removeKeyListener(keyEvent);
@@ -71,7 +94,7 @@ public class GamePanel extends JPanel {
         pnl.add(lbl_score);
 
         pnl.add(new JLabel("Time:"));
-        pnl.add(new JLabel("00:10:00"));
+        pnl.add(lbl_time);
 
         add(pnl,BorderLayout.NORTH);
     }

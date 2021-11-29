@@ -11,6 +11,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import Game2048.*;
+
+import java.sql.*;
+
 public class SelectModePanel extends MenuPanel{
     public SelectModePanel(){
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
@@ -62,7 +66,7 @@ public class SelectModePanel extends MenuPanel{
         btn2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(null, Main.gameRule, "게임규칙", JOptionPane.PLAIN_MESSAGE); //게임규칙
+                
             }
         });
         jPanel.add(newLine(btn2));
