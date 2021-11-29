@@ -52,7 +52,16 @@ class MainFrame extends JFrame{
     								"4: 2048을 만들기 전 이동할 수 없는 경우 즉 16칸이 꽉 차있으면서 인접한 두 칸이 같지 않을 때, 게임 오버가 되며, 2048을 만듦과 동시에 이동 불가면 역시 마찬가지다";
 	
     public MainFrame(JPanel StartPanel){
-        setTitle("Game2048");
+    	try {
+        	if(Main.dbConn == null || Main.dbConn.isClosed())
+        		setTitle("Game2048 (Off Line)");
+        	else
+        		setTitle("Game2048 (On Line)");
+    	}
+    	catch(Exception err) {
+    		
+    	}
+
         setSize(500, 500);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
